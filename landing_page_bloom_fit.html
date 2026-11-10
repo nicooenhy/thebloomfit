@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bloom Fit | Ropa Deportiva Femenina</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Nunito:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Nunito', 'sans-serif'],
+                        heading: ['Montserrat', 'sans-serif'],
+                    },
+                    colors: {
+                        bloom: {
+                            pastel: '#F8C8DC',
+                            opaque: '#F4A7B9',
+                            bg: '#FAFAFA'
+                        }
+                    },
+                    animation: {
+                        'float': 'float 4s ease-in-out infinite',
+                        'float-slow': 'float 6s ease-in-out infinite',
+                        'breathe': 'breathe 4s ease-in-out infinite',
+                        'icon-float': 'iconFloat 4s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-12px)' },
+                        },
+                        breathe: {
+                            '0%, 100%': { transform: 'scale(1)', boxShadow: '0 0 15px rgba(244, 167, 185, 0.15)' },
+                            '50%': { transform: 'scale(1.02)', boxShadow: '0 0 35px rgba(244, 167, 185, 0.4)' },
+                        },
+                        iconFloat: {
+                             '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-4px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .interactive-element {
+            transition: all 0.3s ease;
+        }
+        .highlight-click {
+            background-color: rgba(244, 167, 185, 0.4) !important;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.05);
+            border-color: transparent !important;
+        }
+        .highlight-pastel {
+            background-color: #F8C8DC !important;
+            border-color: #F4A7B9 !important;
+        }
+        .form-input:focus {
+            transform: scale(1.02);
+        }
+        body {
+            overflow-x: hidden;
+        }
+        .img-soft-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(250,250,250,0.2), transparent);
+            pointer-events: none;
+            border-radius: inherit;
+        }
+    </style>
+</head>
+<body class="bg-bloom-bg text-gray-800 font-sans antialiased selection:bg-bloom-pastel selection:text-gray-900">
+
+    <nav class="fixed top-0 left-0 w-full z-50 bg-white/90 backdrop-blur-md border-b border-bloom-pastel/30 shadow-sm transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 md:px-8 lg:px-16 flex justify-between items-center h-20">
+            
+            <button id="mobileMenuBtn" class="md:hidden text-gray-800 focus:outline-none click-target p-2 rounded-lg">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+            </button>
+
+            <div class="hidden md:flex items-center gap-8">
+                <a href="#nosotros" class="text-gray-600 hover:text-bloom-opaque font-heading font-semibold transition-colors nav-link">Nosotros</a>
+                <a href="#valores" class="text-gray-600 hover:text-bloom-opaque font-heading font-semibold transition-colors nav-link">Valores</a>
+                <a href="#por-que-elegirnos" class="text-gray-600 hover:text-bloom-opaque font-heading font-semibold transition-colors nav-link">Beneficios</a>
+                <a href="#preventa" class="bg-bloom-pastel text-gray-900 px-6 py-2 rounded-full font-bold hover:bg-bloom-opaque hover:text-white transition-all shadow-sm hover:shadow-md click-target nav-link">Preventa</a>
+            </div>
+
+            <!-- Logo Nav (Esquina Derecha) -->
+            <a href="#" class="flex items-center interactive-element hover:scale-105">
+                <img src="BloomFit-LOGO (1).png" 
+                     onerror="this.onerror=null; this.outerHTML='<span class=\'text-2xl font-heading font-bold text-bloom-opaque tracking-widest uppercase\'>BLOOMFIT</span>';" 
+                     alt="Logo Bloom Fit" 
+                     class="h-14 w-auto object-contain">
+            </a>
+            
+        </div>
+
+        <div id="mobileMenu" class="hidden md:hidden bg-white border-t border-bloom-pastel/30 absolute w-full shadow-lg">
+            <div class="flex flex-col px-4 pt-2 pb-6 gap-4">
+                <a href="#nosotros" class="mobile-link nav-link text-gray-700 font-heading font-semibold text-lg py-2 border-b border-gray-50">Nosotros</a>
+                <a href="#valores" class="mobile-link nav-link text-gray-700 font-heading font-semibold text-lg py-2 border-b border-gray-50">Valores</a>
+                <a href="#por-que-elegirnos" class="mobile-link nav-link text-gray-700 font-heading font-semibold text-lg py-2 border-b border-gray-50">Beneficios</a>
+                <a href="#preventa" class="mobile-link nav-link text-bloom-opaque font-heading font-bold text-lg py-2">Club de Preventa</a>
+            </div>
+        </div>
+    </nav>
+
+    <header class="relative min-h-screen flex items-center justify-center px-4 md:px-8 lg:px-16 overflow-hidden bg-white pt-28 pb-10">
+        <div class="absolute top-10 left-[-5%] w-64 h-64 md:w-96 md:h-96 bg-bloom-pastel rounded-full mix-blend-multiply filter blur-[80px] opacity-40 animate-float" style="animation-delay: 0s;"></div>
+        <div class="absolute bottom-10 right-[-5%] w-64 h-64 md:w-80 md:h-80 bg-bloom-opaque rounded-full mix-blend-multiply filter blur-[80px] opacity-30 animate-float" style="animation-delay: 1.5s;"></div>
+        
+        <div class="z-10 reveal active w-full max-w-7xl grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-8 items-center">
+            
+            <div class="flex flex-col items-center lg:items-start text-center lg:text-left order-1">
+                <div class="mb-6 flex items-center justify-center lg:justify-start">
+                    <span class="text-2xl md:text-3xl font-heading font-bold text-bloom-opaque tracking-widest uppercase animate-icon-float">BLOOMFIT</span>
+                </div>
+                
+                <h2 class="text-4xl md:text-5xl lg:text-6xl font-heading font-bold text-gray-800 mb-6 leading-[1.15]">
+                    Ropa deportiva que te hace sentir <span class="text-bloom-opaque relative inline-block whitespace-nowrap z-10">segura<span class="absolute -bottom-2 left-0 w-full h-3 bg-bloom-pastel/60 rounded-full -z-10"></span></span>,<br class="hidden lg:block"> <span class="text-bloom-opaque relative inline-block whitespace-nowrap z-10">cómoda<span class="absolute -bottom-2 left-0 w-full h-3 bg-bloom-pastel/60 rounded-full -z-10"></span></span> y con <span class="text-bloom-opaque relative inline-block whitespace-nowrap z-10">estilo<span class="absolute -bottom-2 left-0 w-full h-3 bg-bloom-pastel/60 rounded-full -z-10"></span></span>
+                </h2>
+                
+                <p class="text-lg md:text-xl lg:text-2xl text-gray-500 mb-10 max-w-xl font-medium leading-relaxed">
+                    Prendas modernas y funcionales para tu vida activa. Diseñadas para moverse contigo como una segunda piel.
+                </p>
+                
+                <a href="#preventa" class="nav-link interactive-element animate-float-slow bg-bloom-pastel text-gray-900 font-bold py-4 px-10 rounded-full text-lg md:text-xl shadow-lg hover:shadow-[0_0_25px_rgba(244,167,185,0.7)] hover:-translate-y-1 click-target inline-block">
+                    Únete al Club de Preventa
+                </a>
+            </div>
+
+            <div class="relative order-2 w-full max-w-md lg:max-w-none mx-auto">
+                <div class="absolute inset-0 bg-bloom-pastel opacity-30 rounded-[2.5rem] translate-x-4 translate-y-4 md:translate-x-6 md:translate-y-6 -z-10 transition-transform duration-500 hover:translate-x-2 hover:translate-y-2"></div>
+                <div class="relative h-[500px] lg:h-[650px] w-full rounded-[2.5rem] overflow-hidden shadow-2xl bg-gray-100">
+                    <img src="https://i.pinimg.com/1200x/74/38/e7/7438e7af49e3d20895c2543da259ac25.jpg" 
+                         onerror="this.onerror=null; this.src='https://placehold.co/1000x1200/F8C8DC/ffffff?text=Bloom+Fit+Estudio';"
+                         alt="Mujer con ropa deportiva de tonos claros Bloom Fit" 
+                         class="w-full h-full object-cover object-center hover:scale-105 transition-transform duration-700 ease-out">
+                    <div class="img-soft-overlay"></div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section id="nosotros" class="py-24 bg-bloom-bg px-4 md:px-8 lg:px-16 relative">
+        <div class="max-w-7xl mx-auto reveal">
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-20">
+                <div class="relative w-full max-w-md lg:max-w-none mx-auto hidden md:block">
+                    <svg class="absolute -top-8 -left-8 w-24 h-24 text-bloom-pastel/50 animate-float" fill="currentColor" viewBox="0 0 100 100">
+                        <circle cx="50" cy="50" r="15" />
+                        <circle cx="20" cy="80" r="8" />
+                        <circle cx="80" cy="20" r="10" />
+                    </svg>
+                    <div class="relative h-[400px] lg:h-[500px] w-full rounded-3xl overflow-hidden shadow-xl">
+                        <img src="https://i.pinimg.com/1200x/63/9b/15/639b159c997759a2c9621895e8f281d2.jpg" 
+                             alt="Postura de yoga serena, luz natural, fondo blanco minimalista" 
+                             class="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-700 ease-out">
+                        <div class="absolute inset-0 bg-gradient-to-t from-bloom-bg/50 to-transparent"></div>
+                    </div>
+                </div>
+
+                <div class="text-center lg:text-left">
+                    <h2 class="text-3xl md:text-4xl lg:text-5xl font-heading font-bold text-gray-800 mb-6">¿Quiénes somos?</h2>
+                    <p class="text-gray-600 text-lg md:text-xl max-w-2xl mx-auto lg:mx-0 leading-relaxed">
+                        Somos <strong class="text-gray-800 border-b-2 border-bloom-pastel">Bloom Fit</strong>, un emprendimiento peruano dedicado a crear ropa deportiva femenina pensada para ti: cómoda, resistente y siempre a la moda. Nos enfocamos en que cada entrenamiento o momento activo lo vivas con absoluta confianza y libertad de movimiento.
+                    </p>
+                </div>
+            </div>
+            
+            <div id="valores" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-6 scroll-mt-28">
+                <div class="interactive-element value-card bg-white border border-bloom-pastel/30 rounded-2xl p-6 text-center shadow-sm hover:shadow-xl hover:-translate-y-3 cursor-pointer flex flex-col items-center justify-center gap-4 group">
+                    <div class="w-14 h-14 rounded-full bg-bloom-pastel/20 flex items-center justify-center text-bloom-opaque group-hover:scale-110 transition-transform duration-300">
+                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"></path></svg>
+                    </div>
+                    <h3 class="font-heading font-bold text-gray-800 md:text-lg">Calidad</h3>
+                </div>
+
+                <div class="interactive-element value-card bg-white border border-bloom-pastel/30 rounded-2xl p-6 text-center shadow-sm hover:shadow-xl hover:-translate-y-3 cursor-pointer flex flex-col items-center justify-center gap-4 group">
+                    <div class="w-14 h-14 rounded-full bg-bloom-pastel/20 flex items-center justify-center text-bloom-opaque group-hover:scale-110 transition-transform duration-300">
+                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                    </div>
+                    <h3 class="font-heading font-bold text-gray-800 md:text-lg">Confianza</h3>
+                </div>
+
+                <div class="interactive-element value-card bg-white border border-bloom-pastel/30 rounded-2xl p-6 text-center shadow-sm hover:shadow-xl hover:-translate-y-3 cursor-pointer flex flex-col items-center justify-center gap-4 group">
+                    <div class="w-14 h-14 rounded-full bg-bloom-pastel/20 flex items-center justify-center text-bloom-opaque group-hover:scale-110 transition-transform duration-300">
+                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
+                    </div>
+                    <h3 class="font-heading font-bold text-gray-800 md:text-lg">Empatía</h3>
+                </div>
+
+                <div class="interactive-element value-card bg-white border border-bloom-pastel/30 rounded-2xl p-6 text-center shadow-sm hover:shadow-xl hover:-translate-y-3 cursor-pointer flex flex-col items-center justify-center gap-4 group">
+                    <div class="w-14 h-14 rounded-full bg-bloom-pastel/20 flex items-center justify-center text-bloom-opaque group-hover:scale-110 transition-transform duration-300">
+                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path></svg>
+                    </div>
+                    <h3 class="font-heading font-bold text-gray-800 md:text-lg">Innovación</h3>
+                </div>
+
+                <div class="interactive-element value-card bg-white border border-bloom-pastel/30 rounded-2xl p-6 text-center shadow-sm hover:shadow-xl hover:-translate-y-3 cursor-pointer flex flex-col items-center justify-center gap-4 group col-span-2 md:col-span-1 lg:col-span-1">
+                    <div class="w-14 h-14 rounded-full bg-bloom-pastel/20 flex items-center justify-center text-bloom-opaque group-hover:scale-110 transition-transform duration-300">
+                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    </div>
+                    <h3 class="font-heading font-bold text-gray-800 md:text-lg">Responsabilidad</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="por-que-elegirnos" class="py-24 bg-white px-4 md:px-8 lg:px-16 overflow-hidden">
+        <div class="max-w-7xl mx-auto reveal">
+            <h2 class="text-3xl md:text-4xl lg:text-5xl font-heading font-bold text-gray-800 mb-16 text-center">¿Por qué elegirnos?</h2>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+                <div class="flex flex-col gap-5 order-2 lg:order-1">
+                    <div class="interactive-element feature-item bg-bloom-bg border-2 border-transparent hover:border-bloom-pastel/50 rounded-2xl p-5 md:p-6 flex items-center gap-5 cursor-pointer hover:shadow-lg transition-all group select-none">
+                        <div class="w-12 h-12 flex-shrink-0 bg-bloom-pastel rounded-full flex items-center justify-center animate-icon-float text-white shadow-sm" style="animation-delay: 0s;">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                        </div>
+                        <p class="text-lg md:text-xl font-semibold text-gray-700 group-hover:text-gray-900">Diseños modernos y estéticos</p>
+                    </div>
+
+                    <div class="interactive-element feature-item bg-bloom-bg border-2 border-transparent hover:border-bloom-pastel/50 rounded-2xl p-5 md:p-6 flex items-center gap-5 cursor-pointer hover:shadow-lg transition-all group select-none">
+                        <div class="w-12 h-12 flex-shrink-0 bg-bloom-pastel rounded-full flex items-center justify-center animate-icon-float text-white shadow-sm" style="animation-delay: 0.2s;">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                        </div>
+                        <p class="text-lg md:text-xl font-semibold text-gray-700 group-hover:text-gray-900">Telas resistentes y cómodas</p>
+                    </div>
+
+                    <div class="interactive-element feature-item bg-bloom-bg border-2 border-transparent hover:border-bloom-pastel/50 rounded-2xl p-5 md:p-6 flex items-center gap-5 cursor-pointer hover:shadow-lg transition-all group select-none">
+                        <div class="w-12 h-12 flex-shrink-0 bg-bloom-pastel rounded-full flex items-center justify-center animate-icon-float text-white shadow-sm" style="animation-delay: 0.4s;">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                        </div>
+                        <p class="text-lg md:text-xl font-semibold text-gray-700 group-hover:text-gray-900">Atención personalizada</p>
+                    </div>
+
+                    <div class="interactive-element feature-item bg-bloom-bg border-2 border-transparent hover:border-bloom-pastel/50 rounded-2xl p-5 md:p-6 flex items-center gap-5 cursor-pointer hover:shadow-lg transition-all group select-none">
+                        <div class="w-12 h-12 flex-shrink-0 bg-bloom-pastel rounded-full flex items-center justify-center animate-icon-float text-white shadow-sm" style="animation-delay: 0.6s;">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                        </div>
+                        <p class="text-lg md:text-xl font-semibold text-gray-700 group-hover:text-gray-900">Precios accesibles</p>
+                    </div>
+
+                    <div class="interactive-element feature-item bg-bloom-bg border-2 border-transparent hover:border-bloom-pastel/50 rounded-2xl p-5 md:p-6 flex items-center gap-5 cursor-pointer hover:shadow-lg transition-all group select-none">
+                        <div class="w-12 h-12 flex-shrink-0 bg-bloom-pastel rounded-full flex items-center justify-center animate-icon-float text-white shadow-sm" style="animation-delay: 0.8s;">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                        </div>
+                        <p class="text-lg md:text-xl font-semibold text-gray-700 group-hover:text-gray-900">Envíos a todo el Perú</p>
+                    </div>
+                </div>
+
+                <div class="relative order-1 lg:order-2">
+                    <div class="absolute -inset-4 bg-bloom-bg rounded-t-[10rem] rounded-b-3xl -z-10 hidden md:block"></div>
+                    <div class="relative h-[550px] w-full rounded-t-[10rem] rounded-b-3xl overflow-hidden">
+                        <img src="https://i.pinimg.com/736x/3e/ac/91/3eac9114807e9ab50cf54927388e0a02.jpg" 
+                             alt="Mujer con ropa deportiva blanca ajustada y cómoda en entorno luminoso" 
+                             class="w-full h-full object-cover object-center">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="preventa" class="py-24 bg-bloom-bg px-4 md:px-8 flex justify-center relative">
+        <div class="absolute inset-0 bg-gradient-to-b from-transparent to-bloom-pastel/10 pointer-events-none"></div>
+        
+        <div class="max-w-6xl w-full reveal animate-breathe bg-white rounded-3xl shadow-2xl border-4 border-bloom-pastel relative overflow-hidden flex flex-col lg:flex-row">
+            
+            <div class="w-full lg:w-1/2 h-[350px] lg:h-auto relative hidden md:block">
+                <img src="https://i.pinimg.com/1200x/40/cd/c8/40cdc8514e5520172bdb38a6eec7b5aa.jpg" 
+                     alt="Ropa deportiva Bloom Fit Preventa" 
+                     class="absolute inset-0 w-full h-full object-cover object-center">
+                <div class="absolute inset-0 bg-bloom-pastel/10"></div>
+            </div>
+
+            <div class="w-full lg:w-1/2 p-8 md:p-12 relative flex flex-col justify-center">
+                <div class="absolute top-0 right-0 w-48 h-48 bg-bloom-pastel/20 rounded-bl-full -z-0 pointer-events-none"></div>
+                <div class="absolute bottom-0 left-0 w-48 h-48 bg-bloom-opaque/10 rounded-tr-full -z-0 pointer-events-none"></div>
+                
+                <div class="text-center mb-10 relative z-10">
+                    <div class="text-5xl mb-4 animate-float inline-block">🚀</div>
+                    <h2 class="text-3xl md:text-4xl lg:text-5xl font-heading font-bold text-gray-800 mb-6">¡Únete al Club de Preventa!</h2>
+                    <p class="text-gray-600 text-lg md:text-xl max-w-2xl mx-auto">
+                        Sé la primera en estrenar nuestras colecciones nuevas, obtén descuentos exclusivos y accede a modelos limitados antes que nadie.
+                    </p>
+                </div>
+                
+                <form id="preventaForm" class="flex flex-col gap-6 relative z-10 max-w-md mx-auto w-full">
+                    <div class="flex flex-col gap-2">
+                        <label for="nombre" class="font-semibold text-gray-700 ml-2">Nombre completo</label>
+                        <input type="text" id="nombre" name="nombre" required class="form-input interactive-element w-full px-5 py-4 rounded-xl border-2 border-gray-100 bg-gray-50 outline-none text-gray-800 placeholder-gray-400 click-target focus:bg-white" placeholder="Ej. María Pérez">
+                    </div>
+                    
+                    <div class="flex flex-col gap-2">
+                        <label for="celular" class="font-semibold text-gray-700 ml-2">Número de celular</label>
+                        <input type="tel" id="celular" name="celular" required class="form-input interactive-element w-full px-5 py-4 rounded-xl border-2 border-gray-100 bg-gray-50 outline-none text-gray-800 placeholder-gray-400 click-target focus:bg-white" placeholder="Ej. 987 654 321">
+                    </div>
+                    
+                    <div class="flex flex-col gap-2">
+                        <label for="correo" class="font-semibold text-gray-700 ml-2">Correo electrónico</label>
+                        <input type="email" id="correo" name="correo" required class="form-input interactive-element w-full px-5 py-4 rounded-xl border-2 border-gray-100 bg-gray-50 outline-none text-gray-800 placeholder-gray-400 click-target focus:bg-white" placeholder="maria@ejemplo.com">
+                    </div>
+                    
+                    <button type="submit" class="interactive-element mt-6 bg-bloom-opaque text-white font-bold text-xl py-5 px-8 rounded-xl shadow-lg hover:shadow-2xl hover:-translate-y-1 hover:bg-[#eb96a9] click-target w-full">
+                        Quiero ser parte
+                    </button>
+                </form>
+
+                <div id="successMessage" class="hidden flex-col items-center justify-center py-12 text-center relative z-10 min-h-[300px]">
+                    <div class="w-24 h-24 bg-green-50 border-4 border-green-200 text-green-500 rounded-full flex items-center justify-center mb-6 shadow-inner animate-float">
+                        <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                    </div>
+                    <h3 class="text-3xl md:text-4xl font-heading font-bold text-gray-800 mb-4">¡Gracias por tu interés!</h3>
+                    <p class="text-gray-600 text-lg md:text-xl max-w-lg">Tus datos han sido registrados con éxito. Muy pronto recibirás nuestras novedades exclusivas.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-gray-900 text-white py-14 text-center">
+        <div class="max-w-4xl mx-auto px-4 flex flex-col items-center gap-6">
+            <div class="flex justify-center mb-2">
+                <h2 class="text-4xl md:text-5xl font-heading font-bold text-white tracking-widest uppercase">BLOOMFIT</h2>
+            </div>
+            
+            <p class="text-xl italic opacity-90 font-light text-gray-300">"Activa tu estilo, vive con fuerza"</p>
+            
+            <div class="flex gap-6 mt-6">
+                <!-- Icono Instagram -->
+                <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" aria-label="Instagram" class="interactive-element w-14 h-14 rounded-full bg-gray-800 flex items-center justify-center hover:bg-bloom-opaque hover:text-gray-900 hover:-translate-y-2 click-target shadow-lg">
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.162c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                </a>
+                <!-- Icono TikTok -->
+                <a href="https://www.tiktok.com/" target="_blank" rel="noopener noreferrer" aria-label="TikTok" class="interactive-element w-14 h-14 rounded-full bg-gray-800 flex items-center justify-center hover:bg-bloom-opaque hover:text-gray-900 hover:-translate-y-2 click-target shadow-lg">
+                     <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/></svg>
+                </a>
+            </div>
+            
+            <div class="w-full h-px bg-gray-800 mt-8 mb-4"></div>
+            <p class="text-gray-500 text-sm">© 2026 Bloom Fit. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            /* 1. Animación de revelado al hacer scroll */
+            const revealElements = document.querySelectorAll('.reveal');
+            const revealObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                        observer.unobserve(entry.target); 
+                    }
+                });
+            }, { threshold: 0.12 });
+
+            revealElements.forEach(el => {
+                if(el.getBoundingClientRect().top < window.innerHeight) {
+                     setTimeout(() => el.classList.add('active'), 100);
+                } else {
+                    revealObserver.observe(el);
+                }
+            });
+
+            /* 2. Efecto de resaltado global al hacer clic */
+            const clickTargets = document.querySelectorAll('.click-target');
+            const applyClickEffect = (e) => {
+                const target = e.currentTarget;
+                target.classList.add('highlight-click');
+                setTimeout(() => {
+                    target.classList.remove('highlight-click');
+                }, 300);
+            };
+
+            clickTargets.forEach(target => {
+                target.addEventListener('mousedown', applyClickEffect);
+                target.addEventListener('touchstart', applyClickEffect, {passive: true});
+            });
+
+            /* 3. Interacción de las Tarjetas de Valores */
+            const valueCards = document.querySelectorAll('.value-card');
+            valueCards.forEach(card => {
+                card.addEventListener('click', function() {
+                    this.classList.toggle('highlight-pastel');
+                    this.style.transform = 'scale(0.96)';
+                    setTimeout(() => {
+                         this.style.transform = ''; 
+                    }, 150);
+                });
+            });
+
+            /* 4. Interacción de la Lista "¿Por qué elegirnos?" */
+            const featureItems = document.querySelectorAll('.feature-item');
+            featureItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    this.classList.toggle('highlight-click');
+                    this.style.transform = 'translateX(12px)';
+                    setTimeout(() => {
+                        this.style.transform = 'translateX(0)';
+                    }, 300);
+                });
+            });
+
+            /* 5. Estilos de foco para campos de formulario */
+            const inputs = document.querySelectorAll('.form-input');
+            inputs.forEach(input => {
+                input.addEventListener('focus', function() {
+                    this.classList.add('ring-4', 'ring-bloom-opaque/30', 'border-bloom-opaque');
+                });
+                input.addEventListener('blur', function() {
+                    this.classList.remove('ring-4', 'ring-bloom-opaque/30', 'border-bloom-opaque');
+                });
+            });
+
+            /* 6. SOLUCIÓN GOOGLE SITES: Navegación de enlaces internos */
+            const internalLinks = document.querySelectorAll('a.nav-link[href^="#"]');
+            internalLinks.forEach(link => {
+                link.addEventListener('click', function (e) {
+                    // Evitamos que abra en pestaña nueva o recargue el iframe
+                    e.preventDefault(); 
+                    
+                    const targetId = this.getAttribute('href');
+                    if(targetId === '#') return;
+                    
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        // Deslizamiento suave dentro del iframe
+                        targetElement.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                        
+                        // Si el menú móvil estaba abierto, lo cerramos
+                        document.getElementById('mobileMenu').classList.add('hidden');
+                    }
+                });
+            });
+
+            /* 7. SOLUCIÓN GOOGLE SITES: Envío de formulario Inmediato */
+            const form = document.getElementById('preventaForm');
+            const successMessage = document.getElementById('successMessage');
+            const scriptURL = 'https://script.google.com/macros/s/AKfycbz0iu4Mn5DWHU2uMZJYjXoU0OyJKt2_PQ0KdUYdXVz_Zo1t9CmckJWcQnx3zNWjG4Zzrw/exec';
+
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                
+                const formData = new FormData(form);
+                
+                // 1. Enviamos los datos "en el fondo" con el modo 'no-cors' (Obligatorio para iframes de Sites)
+                fetch(scriptURL, { 
+                    method: 'POST', 
+                    body: formData,
+                    mode: 'no-cors' 
+                }).catch(error => console.log('Envío realizado:', error));
+
+                // 2. MOSTRAR MENSAJE INMEDIATAMENTE sin esperar la respuesta del servidor
+                form.style.display = 'none'; // Ocultamos el formulario de golpe
+                
+                successMessage.classList.remove('hidden');
+                successMessage.classList.add('flex');
+                successMessage.style.opacity = '0';
+                successMessage.style.transform = 'translateY(20px)';
+                
+                // Pequeño truco para que la animación de aparición funcione
+                void successMessage.offsetWidth;
+                
+                successMessage.style.transition = 'all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+                successMessage.style.opacity = '1';
+                successMessage.style.transform = 'translateY(0)';
+            });
+
+            /* 8. Menú Mobile Toggle */
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const mobileMenu = document.getElementById('mobileMenu');
+
+            mobileMenuBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+            // (La función de cerrar al hacer click ya se maneja en la sección 6)
+        });
+    </script>
+</body>
+</html>
